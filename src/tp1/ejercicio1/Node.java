@@ -16,7 +16,7 @@ public class Node {
     }
 
     public Object getInfo() {
-        return info;
+        return this.info;
     }
 
     public void setInfo(Object info) {

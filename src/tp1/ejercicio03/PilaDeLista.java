@@ -25,15 +25,19 @@ public class PilaDeLista {
         pila.insertFront(o);
     }
 
-    public void pop() {
-
-    }
-//REVISAR ESTO LO HICE ASÍ PARA QUE NO DE ERROR NADA MAS
-    public Object top() {
+    public Object pop() {
         return this.pila.extractFront();
     }
 
+    public Object top() {
+        return this.pila.get(0);
+    }
+//metodo a medio implementar
     public void reverse() {
+        PilaDeLista pl = new PilaDeLista();
+        for (int i = 0; i < this.pila.size(); i++) {
+            pl.push(pila.extractFront());
+        }
 
     }
 }

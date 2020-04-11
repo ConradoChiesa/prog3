@@ -1,6 +1,10 @@
 package tp1.ejercicio1;
 
-public class MySimpleLikedList {
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+
+public class MySimpleLikedList implements Iterable<MySimpleLikedList> {
     protected Node first;
     private int size;
     public MySimpleLikedList() {
@@ -26,8 +30,7 @@ public class MySimpleLikedList {
     }
 
     public boolean isEmpty() {
-        if (this.first==null) return true;
-        else return false;
+        return this.first == null;
     }
 
     public int size() {
@@ -43,5 +46,70 @@ public class MySimpleLikedList {
             return n.getInfo();
         }
         return null;
+    }
+
+    public int indexOf(Object o) {
+        int index=0;
+        while (index<this.size) {
+            if (this.get(index).equals(o))
+                return index;
+            else index++;
+        }
+        return -1;
+    }
+
+    public void subSecuence(MySimpleLikedList ml) {
+        int index = 0;
+        while (index<ml.size()){
+
+        }
+    }
+
+    @Override
+    public Iterator<MySimpleLikedList> iterator() {
+        Iterator MyIt = new MyIterator();
+        return MyIt;
+    }
+
+    @Override
+    public void forEach(Consumer<? super MySimpleLikedList> action) {
+
+    }
+
+    @Override
+    public Spliterator<MySimpleLikedList> spliterator() {
+        return null;
+    }
+
+
+
+    protected class MyIterator implements Iterator<MySimpleLikedList> {
+        protected int position;
+        public MyIterator() {
+            position = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            boolean result;
+            if (position<size())
+                result = true;
+            else result = false;
+            return result;
+        }
+
+        public Object next() {
+            return this.get(position);
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("No solicitado en el practico");
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super MySimpleLikedList> action) {
+
+        }
     }
 }
