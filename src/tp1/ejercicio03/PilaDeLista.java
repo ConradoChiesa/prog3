@@ -15,6 +15,8 @@ implementación que hagan.
 */
 import tp1.ejercicio1.MySimpleLikedList;
 
+import java.util.Iterator;
+
 public class PilaDeLista {
     private MySimpleLikedList pila;
 
@@ -34,9 +36,15 @@ public class PilaDeLista {
     }
 //metodo a medio implementar
     public void reverse() {
-        PilaDeLista pl = new PilaDeLista();
-        for (int i = 0; i < this.pila.size(); i++) {
-            pl.push(pila.extractFront());
+        Object auxArr[];
+        auxArr = new Object[pila.size()];
+        int pos = 0;
+        while (this.pila.size()>0) {
+           auxArr[pos] = pop();
+           pos++;
+        }
+        for (int i = auxArr.length-1; i >= 0; i--) {
+            this.push(auxArr[i]);
         }
 
     }

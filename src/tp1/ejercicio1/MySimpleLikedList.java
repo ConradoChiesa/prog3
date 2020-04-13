@@ -98,8 +98,8 @@ public class MySimpleLikedList implements Iterable<MySimpleLikedList> {
             return result;
         }
 
-        public Object next() {
-            return this.get(position);
+        public MySimpleLikedList next() {
+            return (MySimpleLikedList) MySimpleLikedList.this.get(position);
         }
 
         @Override
