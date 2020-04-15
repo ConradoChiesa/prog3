@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class MySimpleLikedList implements Iterable<MySimpleLikedList> {
+public class MySimpleLikedList implements Iterable<Object> {
     protected Node first;
     private int size;
     public MySimpleLikedList() {
@@ -66,50 +66,7 @@ public class MySimpleLikedList implements Iterable<MySimpleLikedList> {
     }
 
     @Override
-    public Iterator<MySimpleLikedList> iterator() {
-        Iterator MyIt = new MyIterator();
-        return MyIt;
-    }
-
-    @Override
-    public void forEach(Consumer<? super MySimpleLikedList> action) {
-
-    }
-
-    @Override
-    public Spliterator<MySimpleLikedList> spliterator() {
-        return null;
-    }
-
-
-
-    protected class MyIterator implements Iterator<MySimpleLikedList> {
-        protected int position;
-        public MyIterator() {
-            position = 0;
-        }
-
-        @Override
-        public boolean hasNext() {
-            boolean result;
-            if (position<size())
-                result = true;
-            else result = false;
-            return result;
-        }
-
-        public MySimpleLikedList next() {
-            return (MySimpleLikedList) MySimpleLikedList.this.get(position);
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("No solicitado en el practico");
-        }
-
-        @Override
-        public void forEachRemaining(Consumer<? super MySimpleLikedList> action) {
-
-        }
+    public Iterator<Object> iterator() {
+        return new MyIterator(this.first);
     }
 }
