@@ -30,7 +30,7 @@ public class BinaryTree {
 
     public void inOrder(){
 
-        if (this.raiz!=null) {
+/*        if (this.raiz!=null) {
 
             raiz.getLeft().inOrder();
 
@@ -38,7 +38,7 @@ public class BinaryTree {
 
             raiz.hd.inOrder();
 
-        }
+        }*/
 
     }
 }

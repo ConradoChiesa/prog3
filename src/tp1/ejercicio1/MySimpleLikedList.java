@@ -1,18 +1,16 @@
 package tp1.ejercicio1;
 
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
-public class MySimpleLikedList implements Iterable<Object> {
+public class MySimpleLikedList implements Iterable<Integer> {
     protected Node first;
     private int size;
     public MySimpleLikedList() {
         this.first=null;
     }
 
-    public void insertFront(Object o) {
-        Node tmp = new Node(o, null);
+    public void insertFront(Integer i) {
+        Node tmp = new Node(i, null);
         tmp.setNext(first);
         this.first=tmp;
         this.size++;
@@ -66,7 +64,7 @@ public class MySimpleLikedList implements Iterable<Object> {
     }
 
     @Override
-    public Iterator<Object> iterator() {
+    public Iterator<Integer> iterator() {
         return new MyIterator(this.first);
     }
 }

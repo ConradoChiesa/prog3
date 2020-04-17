@@ -10,8 +10,8 @@ public class DoubleNode extends Node {
         this.after=null;
     }
 
-    public DoubleNode(DoubleNode next, Object o) {
-        super(o, next);
+    public DoubleNode(DoubleNode next, Integer i) {
+        super(i, next);
         this.after=after;
     }
 

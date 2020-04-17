@@ -2,7 +2,7 @@ package tp1.ejercicio1;
 
 public class Node {
 
-    private Object info;
+    private Integer info;
     private Node next;
 
     public Node() {
@@ -10,16 +10,16 @@ public class Node {
         this.next=null;
     }
 
-    public Node(Object o, Node n) {
+    public Node(Integer o, Node n) {
         this.info=o;
         this.next=n;
     }
 
-    public Object getInfo() {
+    public Integer getInfo() {
         return this.info;
     }
 
-    public void setInfo(Object info) {
+    public void setInfo(Integer info) {
         this.info = info;
     }
 

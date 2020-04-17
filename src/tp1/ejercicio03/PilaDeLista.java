@@ -23,12 +23,13 @@ public class PilaDeLista {
     public PilaDeLista() {
         this.pila = new MySimpleLikedList();
     }
-    public void push(Object o) {
+    public void push(Integer o) {
         pila.insertFront(o);
     }
 
-    public Object pop() {
-        return this.pila.extractFront();
+    public Integer pop() {
+//        return this.pila.extractFront();
+        return null;
     }
 
     public Object top() {
@@ -36,8 +37,8 @@ public class PilaDeLista {
     }
 //metodo a medio implementar
     public void reverse() {
-        Object auxArr[];
-        auxArr = new Object[pila.size()];
+        Integer auxArr[];
+        auxArr = new Integer[pila.size()];
         int pos = 0;
         while (this.pila.size()>0) {
            auxArr[pos] = pop();
