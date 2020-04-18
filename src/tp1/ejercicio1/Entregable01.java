@@ -18,7 +18,7 @@ public class Entregable01 {
         Iterator<Integer> it = msll.iterator();
         while (it.hasNext()) {
             int n = it.next();
-            if (!aux.isEmpty() && aux.get(aux.size()-1)>n) {
+            if (!aux.isEmpty() && aux.get(aux.size()-1)>=n) {
                 if (aux.size() > 1) {
                     list.add(aux);
                     aux = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Entregable01 {
                     aux.clear();
                 }
             }
-                aux.add(n);
+            aux.add(n);
         }
         if (aux.size()>1)
             list.add(aux);
