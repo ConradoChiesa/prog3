@@ -35,6 +35,10 @@ public class MySimpleLikedList implements Iterable<Integer> {
         return this.size;
     }
 
+    public Node getFirst() {
+        return first;
+    }
+
     public Object get(int index) {
         if (index<this.size) {
             Node n = this.first;

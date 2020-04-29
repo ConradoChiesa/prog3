@@ -16,9 +16,10 @@ public class Entregable01 {
     public List<List<Integer>> getList() {
         List<Integer> aux = new ArrayList<>();
         Iterator<Integer> it = msll.iterator();
+        int after=msll.getFirst().getInfo();
         while (it.hasNext()) {
             int n = it.next();
-            if (!aux.isEmpty() && aux.get(aux.size()-1)>=n) {
+            if (!aux.isEmpty() && after>=n) {
                 if (aux.size() > 1) {
                     list.add(aux);
                     aux = new ArrayList<>();
@@ -27,6 +28,7 @@ public class Entregable01 {
                 }
             }
             aux.add(n);
+            after=n;
         }
         if (aux.size()>1)
             list.add(aux);
