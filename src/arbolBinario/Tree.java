@@ -14,6 +14,7 @@ public class Tree {
     public TreeNode getRootNode() {
         return this.root;
     }
+
     public void add(int value) {
         if (this.root == null)
             this.root = new TreeNode(value);
@@ -21,26 +22,24 @@ public class Tree {
             this.add(this.root, value);
     }
 
+    public int getRoot() {
+        return this.root.getValue();
+    }
+
     private void add(TreeNode actual, int value) {
         if (actual.getValue() > value) {
             if (actual.getLeft() == null) {
                 TreeNode temp = new TreeNode(value);
                 actual.setLeft(temp);
-            } else {
+            } else
                 add(actual.getLeft(),value);
-            }
         } else {
             if (actual.getRight() == null) {
                 TreeNode temp = new TreeNode(value);
                 actual.setRight(temp);
-            } else {
+            } else
                 add(actual.getRight(), value);
-            }
         }
-    }
-
-    public int getRoot() {
-        return this.root.getValue();
     }
 
     public boolean hasElem(int i, TreeNode tn) {
@@ -50,13 +49,11 @@ public class Tree {
         else {
             if (root.getValue()==i)
                 hasIt = true;
-            else if (i < root.getValue()){
+            else if (i < root.getValue())
                 hasIt = hasElem(i, tn.getLeft());
-            } else {
+            else
                 hasIt = hasElem(i, tn.getRight());
-            }
         }
-
         return hasIt;
     }
 
@@ -64,27 +61,51 @@ public class Tree {
         return this.root == null;
     }
 
-    public boolean delete(int i) {
-        boolean deleted = false;
+    public void delete(int value) {
+        deleteNode(this.root, value);
+    }
 
-        return deleted;
+    private TreeNode deleteNode(TreeNode tn, int value) {
+        if(tn == null) return tn;
+        if(value < tn.getValue()) {
+            tn.setLeft(deleteNode(tn.getLeft(), value));
+        } else if(value > tn.getValue()) {
+            tn.setRight(deleteNode(tn.getRight(), value));
+        } else {
+            if(tn.getLeft() == null && tn.getRight() == null) {
+                return null;
+            } else if(tn.getLeft() == null) {
+                return tn.getRight();
+            } else if(tn.getRight() == null) {
+                return tn.getLeft();
+            } else {
+                int minValue = minValue(tn.getRight());
+                tn.setValue(minValue);
+                tn.setRight(deleteNode(tn.getRight(), minValue));
+            }
+        }
+        return tn;
+    }
+
+    private int minValue(TreeNode node) {
+        if(node.getLeft() != null) {
+            return minValue(node.getLeft());
+        }
+        return node.getValue();
     }
 
     public int getHeight(TreeNode tn) {
-        int lefth = getHeight(tn.getLeft());
-        int righth = getHeight(tn.getRight());
-        if (tn == null)
+        return getNodeHeight(this.root);
+    }
+
+    private int getNodeHeight(TreeNode tn) {
+        if(tn == null)
             return -1;
-        if (lefth > righth) {
-            return lefth + 1;
-        } else {
-            return righth + 1;
-        }
+        return Math.max(getNodeHeight(tn.getLeft()), getNodeHeight(tn.getRight()))+1;
     }
 
     public void printPostorder(TreeNode tn) {
         if(tn == null){
-            System.out.println("-");
             return;
         }
         printPostorder(tn.getLeft());
@@ -95,7 +116,6 @@ public class Tree {
 
     public void printPreOrder(TreeNode tn) {
         if(tn == null) {
-            System.out.println("-");
             return;
         }
         System.out.print(tn.getValue()+ " ");
@@ -105,7 +125,6 @@ public class Tree {
 
     public void printInOrder(TreeNode tn) {
         if(tn == null){
-            System.out.println("-");
             return;
         }
         printInOrder(tn.getLeft());
@@ -114,12 +133,12 @@ public class Tree {
     }
 
     public List getLongestBranch() {
-        List<Integer> aux = new ArrayList<>();
+        List<TreeNode> aux = new ArrayList<>();
         return aux;
     }
 
     public List getFrontera() {
-        List<Integer> aux = new ArrayList<>();
+        List<TreeNode> aux = new ArrayList<>();
         return aux;
     }
 
@@ -130,8 +149,15 @@ public class Tree {
         return current.getValue();
     }
 
+    public TreeNode getMaxElemNode(TreeNode tn) {
+        TreeNode current = tn;
+        while (current.getRight()!=null)
+            current = current.getRight();
+        return current;
+    }
+
     public List getElemAtLevel(int i) {
-        List<Integer> aux= new ArrayList();
+        List<TreeNode> aux= new ArrayList();
         return aux;
     }
 

@@ -32,4 +32,11 @@ public class TreeNode {
         return value;
     }
 
+    public boolean isLeaf() {
+        return getLeft()==null && getRight()==null;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }
