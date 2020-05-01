@@ -39,4 +39,13 @@ public class TreeNode {
     public void setValue(int value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+                "value=" + value +
+                ", left=" + left +
+                ", right=" + right +
+                '}';
+    }
 }

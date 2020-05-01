@@ -6,13 +6,19 @@ import java.util.List;
 public class Tree {
 
     private TreeNode root;
+    private boolean deleted;
 
     public Tree() {
         this.root = null;
+        this.deleted = false;
     }
 
     public TreeNode getRootNode() {
         return this.root;
+    }
+
+    public boolean isEmpty() {
+        return this.root == null;
     }
 
     public void add(int value) {
@@ -56,27 +62,29 @@ public class Tree {
         }
         return hasIt;
     }
-
-    public boolean isEmpty() {
-        return this.root == null;
-    }
-
-    public void delete(int value) {
+//Este metodo quería no se void porque era el camino facíl y me encapriche con el boolean
+    public boolean delete(int value) {
+        boolean deleted;
         deleteNode(this.root, value);
+        deleted = this.deleted ? true : setDeleted(false);
+        return deleted;
     }
 
     private TreeNode deleteNode(TreeNode tn, int value) {
-        if(tn == null) return tn;
+        if(tn == null) return null;
         if(value < tn.getValue()) {
             tn.setLeft(deleteNode(tn.getLeft(), value));
         } else if(value > tn.getValue()) {
             tn.setRight(deleteNode(tn.getRight(), value));
         } else {
             if(tn.getLeft() == null && tn.getRight() == null) {
+                setDeleted(true);
                 return null;
             } else if(tn.getLeft() == null) {
+                setDeleted(true);
                 return tn.getRight();
             } else if(tn.getRight() == null) {
+                setDeleted(true);
                 return tn.getLeft();
             } else {
                 int minValue = minValue(tn.getRight());
@@ -85,6 +93,11 @@ public class Tree {
             }
         }
         return tn;
+    }
+
+    private boolean setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        return this.deleted;
     }
 
     private int minValue(TreeNode node) {
@@ -105,17 +118,18 @@ public class Tree {
     }
 
     public void printPostorder(TreeNode tn) {
-        if(tn == null){
+        if(tn == null) {
+            System.out.print("-");
             return;
         }
         printPostorder(tn.getLeft());
         printPostorder(tn.getRight());
         System.out.print(tn.getValue()+ " ");
-
     }
 
     public void printPreOrder(TreeNode tn) {
         if(tn == null) {
+            System.out.print("-");
             return;
         }
         System.out.print(tn.getValue()+ " ");
@@ -124,7 +138,8 @@ public class Tree {
     }
 
     public void printInOrder(TreeNode tn) {
-        if(tn == null){
+        if(tn == null) {
+            System.out.print("-");
             return;
         }
         printInOrder(tn.getLeft());
@@ -137,9 +152,24 @@ public class Tree {
         return aux;
     }
 
-    public List getFrontera() {
-        List<TreeNode> aux = new ArrayList<>();
-        return aux;
+    public void getFrontera(TreeNode tn, List<TreeNode> list) {
+        if (tn.isLeaf()) list.add(tn);
+        if (tn.getLeft() != null) {
+            getFrontera(tn.getLeft(), list);
+        }
+        if (tn.getRight() != null) {
+            getFrontera(tn.getRight(), list);
+        }
+    }
+
+    private TreeNode getLeaf(TreeNode tn) {
+        TreeNode current = tn;
+        if (tn.isLeaf()) return tn;
+        else {
+            current = getLeaf(tn.getLeft());
+            current = getLeaf(tn.getRight());
+        }
+        return null;
     }
 
     public int getMaxElem(TreeNode tn) {
@@ -156,8 +186,18 @@ public class Tree {
         return current;
     }
 
-    public List getElemAtLevel(int i) {
-        List<TreeNode> aux= new ArrayList();
+    public List getElemAtLevel(int i, TreeNode tn, int level) {
+        ArrayList aux = new ArrayList();
+
+        TreeNode current = tn;
+        while (level<i) {
+            level++;
+            current=tn.getLeft();
+            getElemAtLevel(i, current, level);
+            if (level==i) {
+                aux.add(current);
+            }
+        }
         return aux;
     }
 
