@@ -5,22 +5,25 @@ import java.util.*;
 public class BinaryTreeTest {
     private static int MAX = 15;
     private static int DEL = 10;
+    private static int FRONTERA = 2;
     public static void main(String[] args) {
-
+        List<Integer> integerArrayList = new ArrayList<>(MAX);
+        List<TreeNode> elemetAtLevel = new ArrayList<>();
+        List<TreeNode> longestBranch = new ArrayList<>();
         Tree ABB = new Tree();
-//        ABB.add(10);
-//        for (int i = 0; i < MAX; i++) {
-//            int nuevo = (int) Math.floor(Math.random()*1000);
-//            ABB.add(nuevo);
-//        }
-        List<Integer> aux = new ArrayList<>(MAX);
-        while (aux.size()<MAX) {
+
+        while (integerArrayList.size()<MAX) {
             int num = (int) Math.floor(Math.random()*40);
-            if (!aux.contains(num)) aux.add(num);
+            if (!integerArrayList.contains(num)){
+                integerArrayList.add(num);
+//                Descomentar la siguiente linea para imprimir el orden de como se agregan los nodos
+//                System.out.println("Agregando :" + num);
+            }
         }
-        Iterator<Integer> it = aux.iterator();
-        while (it.hasNext())
+        Iterator<Integer> it = integerArrayList.iterator();
+        while (it.hasNext()) {
             ABB.add(it.next());
+        }
         System.out.println("Nodo Raíz: "+ ABB.getRoot() + "\n");
         System.out.println("Impresión en orden");
         ABB.printInOrder(ABB.getRootNode());
@@ -43,7 +46,19 @@ public class BinaryTreeTest {
                 frontera) {
             System.out.print(tn.getValue() + " ");
         }
+        ABB.getElemAtLevel(FRONTERA, ABB.getRootNode(), 0, elemetAtLevel);
         System.out.println("\n");
-
+        System.out.println("Impresión de nivel " + FRONTERA);
+        for (TreeNode tn :
+                elemetAtLevel) {
+            System.out.print(tn.getValue() + " ");
+        }
+        ABB.getLongestBranch(longestBranch, ABB.getRootNode());
+        System.out.println("\n");
+        System.out.println("Impresion longestBranch");
+        for (TreeNode tn :
+                longestBranch) {
+            System.out.print(tn.getValue() + " ");
+        }
     }
 }

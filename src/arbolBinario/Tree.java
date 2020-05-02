@@ -116,6 +116,24 @@ public class Tree {
             return -1;
         return Math.max(getNodeHeight(tn.getLeft()), getNodeHeight(tn.getRight()))+1;
     }
+//  Metodo con fallas de implementación
+    public void getLongestBranch(List<TreeNode> list, TreeNode tn) {
+        List<TreeNode> currentLongest = new ArrayList<>();
+        if (tn.isLeaf()) {
+            if (list.size() > currentLongest.size()) {
+                currentLongest = new ArrayList<>();
+                currentLongest.addAll(list);
+            }
+        }
+        if (tn.getLeft() != null) {
+            list.add(tn);
+            getLongestBranch(list, tn.getLeft());
+        }
+        if (tn.getRight() != null) {
+            list.add(tn);
+            getLongestBranch(list, tn.getRight());
+        }
+    }
 
     public void printPostorder(TreeNode tn) {
         if(tn == null) {
@@ -147,11 +165,6 @@ public class Tree {
         printInOrder(tn.getRight());
     }
 
-    public List getLongestBranch() {
-        List<TreeNode> aux = new ArrayList<>();
-        return aux;
-    }
-
     public void getFrontera(TreeNode tn, List<TreeNode> list) {
         if (tn.isLeaf()) list.add(tn);
         if (tn.getLeft() != null) {
@@ -162,6 +175,7 @@ public class Tree {
         }
     }
 
+/*
     private TreeNode getLeaf(TreeNode tn) {
         TreeNode current = tn;
         if (tn.isLeaf()) return tn;
@@ -171,6 +185,7 @@ public class Tree {
         }
         return null;
     }
+*/
 
     public int getMaxElem(TreeNode tn) {
         TreeNode current = tn;
@@ -186,19 +201,16 @@ public class Tree {
         return current;
     }
 
-    public List getElemAtLevel(int i, TreeNode tn, int level) {
-        ArrayList aux = new ArrayList();
-
+    public void getElemAtLevel(int searchLevel, TreeNode tn, int currentLevel, List<TreeNode> list) {
         TreeNode current = tn;
-        while (level<i) {
-            level++;
-            current=tn.getLeft();
-            getElemAtLevel(i, current, level);
-            if (level==i) {
-                aux.add(current);
-            }
+        if (searchLevel == currentLevel) {
+            list.add(tn);
+            return;
         }
-        return aux;
+        if (currentLevel < searchLevel && tn.getLeft() != null)
+            getElemAtLevel(searchLevel,tn.getLeft(),currentLevel+1, list);
+        if (currentLevel < searchLevel && tn.getRight() != null)
+            getElemAtLevel(searchLevel,tn.getRight(),currentLevel+1, list);
     }
 
 }
