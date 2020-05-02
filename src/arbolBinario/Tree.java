@@ -120,29 +120,32 @@ public class Tree {
         }
         return Math.max(getNodeHeight(tn.getLeft()), getNodeHeight(tn.getRight()))+1;
     }
-//  Metodo con fallas de implementación
-    public List getLongestBranch(List<TreeNode> list, List<TreeNode> currentLongest, TreeNode tn) {
-//        List<TreeNode> currentLongest = new ArrayList<>();
+//  Metodo con fallas de implementación.
+//  Trato de llevar un lista con la rama más larga, si llego a una hoja le pregunto si la lista
+//  actual es mayor a la más larga actual, si pasa eso hago un new y copio la actual a la más larga actual
+//  En cualquier caso la complejidad es O(TreeNode) porque debo recorrer todos los nodos preguntando si son hoja
+    public List getLongestBranch(List<TreeNode> list, TreeNode tn) {
+        List<TreeNode> currentLongest = new ArrayList<>();
         if (tn.isLeaf()) {
             if (list.size() > currentLongest.size()) {
-                currentLongest = new ArrayList<>();
+                currentLongest.clear();// = new ArrayList<>();
                 currentLongest.addAll(list);
+            } else {
+                list.clear();
             }
         }
         if (tn.getLeft() != null) {
-            getLongestBranch(list, currentLongest, tn.getLeft());
-            list.add(tn.getLeft());
-        } else {
-            list.remove(tn);
+            list.add(tn);
+            getLongestBranch(list, tn.getLeft());
         }
         if (tn.getRight() != null) {
-            getLongestBranch(list, currentLongest, tn.getRight());
-            list.add(tn.getRight());
-        } else {
-            list.remove(tn);
+            list.add(tn);
+            getLongestBranch(list, tn.getRight());
         }
+//        list.clear();
         return currentLongest;
     }
+
 //La complejidad es de O(TreeNode) para todos los metodos de print ya que recorre todo el arbol
     public void printPostorder(TreeNode tn) {
         if(tn == null) {

@@ -54,7 +54,7 @@ public class BinaryTreeTest {
                 elemetAtLevel) {
             System.out.print(tn.getValue() + " ");
         }
-        ABB.getLongestBranch(longestBranch, longestBranch, ABB.getRootNode());
+        ABB.getLongestBranch(longestBranch, ABB.getRootNode());
         System.out.println("\n");
         System.out.println("Impresion longestBranch");
         for (TreeNode tn :
