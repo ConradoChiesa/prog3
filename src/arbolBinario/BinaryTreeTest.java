@@ -17,7 +17,7 @@ public class BinaryTreeTest {
             if (!integerArrayList.contains(num)){
                 integerArrayList.add(num);
 //                Descomentar la siguiente linea para imprimir el orden de como se agregan los nodos
-//                System.out.println("Agregando :" + num);
+                System.out.println("Agregando :" + num);
             }
         }
         Iterator<Integer> it = integerArrayList.iterator();
@@ -36,6 +36,7 @@ public class BinaryTreeTest {
         System.out.println("\n");
         System.out.println("El elemento mayor es: " + ABB.getMaxElem(ABB.getRootNode()));
         System.out.println("La rama más larga tiene " + ABB.getHeight(ABB.getRootNode()) + " nodos.");
+        System.out.println("Es "+ ABB.hasElem(ABB.getRootNode(), DEL) + " que tiene el valor " + DEL);
         System.out.println(ABB.delete(DEL));
         ABB.printInOrder(ABB.getRootNode());
         List<TreeNode> frontera = new ArrayList<>();
@@ -53,7 +54,7 @@ public class BinaryTreeTest {
                 elemetAtLevel) {
             System.out.print(tn.getValue() + " ");
         }
-        ABB.getLongestBranch(longestBranch, ABB.getRootNode());
+        ABB.getLongestBranch(longestBranch, longestBranch, ABB.getRootNode());
         System.out.println("\n");
         System.out.println("Impresion longestBranch");
         for (TreeNode tn :

@@ -48,20 +48,21 @@ public class Tree {
         }
     }
 
-    public boolean hasElem(int i, TreeNode tn) {
-        boolean hasIt;
-        if (isEmpty())
-            hasIt = false;
-        else {
-            if (root.getValue()==i)
-                hasIt = true;
-            else if (i < root.getValue())
-                hasIt = hasElem(i, tn.getLeft());
-            else
-                hasIt = hasElem(i, tn.getRight());
+    public boolean hasElem( TreeNode tn, int sherching) {
+        if (tn == null) {
+            return false;
         }
-        return hasIt;
+        if (tn.getValue() == sherching) {
+            return true;
+        }
+        boolean hasIt1 = hasElem(tn.getLeft(), sherching);
+        if(hasIt1) {
+            return true;
+        }
+        boolean hasIt2 = hasElem(tn.getRight(), sherching);
+        return hasIt2;
     }
+
 //Este metodo quería no se void porque era el camino facíl y me encapriche con el boolean
     public boolean delete(int value) {
         boolean deleted;
@@ -71,13 +72,15 @@ public class Tree {
     }
 
     private TreeNode deleteNode(TreeNode tn, int value) {
-        if(tn == null) return null;
+        if(tn == null) {
+            return null;
+        }
         if(value < tn.getValue()) {
             tn.setLeft(deleteNode(tn.getLeft(), value));
         } else if(value > tn.getValue()) {
             tn.setRight(deleteNode(tn.getRight(), value));
         } else {
-            if(tn.getLeft() == null && tn.getRight() == null) {
+            if(tn.isLeaf()) {
                 setDeleted(true);
                 return null;
             } else if(tn.getLeft() == null) {
@@ -100,25 +103,26 @@ public class Tree {
         return this.deleted;
     }
 
-    private int minValue(TreeNode node) {
-        if(node.getLeft() != null) {
-            return minValue(node.getLeft());
+    private int minValue(TreeNode tn) {
+        if(tn.getLeft() != null) {
+            return minValue(tn.getLeft());
         }
-        return node.getValue();
+        return tn.getValue();
     }
 
     public int getHeight(TreeNode tn) {
-        return getNodeHeight(this.root);
+        return getNodeHeight(tn);
     }
 
     private int getNodeHeight(TreeNode tn) {
-        if(tn == null)
+        if(tn == null) {
             return -1;
+        }
         return Math.max(getNodeHeight(tn.getLeft()), getNodeHeight(tn.getRight()))+1;
     }
 //  Metodo con fallas de implementación
-    public void getLongestBranch(List<TreeNode> list, TreeNode tn) {
-        List<TreeNode> currentLongest = new ArrayList<>();
+    public List getLongestBranch(List<TreeNode> list, List<TreeNode> currentLongest, TreeNode tn) {
+//        List<TreeNode> currentLongest = new ArrayList<>();
         if (tn.isLeaf()) {
             if (list.size() > currentLongest.size()) {
                 currentLongest = new ArrayList<>();
@@ -126,15 +130,20 @@ public class Tree {
             }
         }
         if (tn.getLeft() != null) {
-            list.add(tn);
-            getLongestBranch(list, tn.getLeft());
+            getLongestBranch(list, currentLongest, tn.getLeft());
+            list.add(tn.getLeft());
+        } else {
+            list.remove(tn);
         }
         if (tn.getRight() != null) {
-            list.add(tn);
-            getLongestBranch(list, tn.getRight());
+            getLongestBranch(list, currentLongest, tn.getRight());
+            list.add(tn.getRight());
+        } else {
+            list.remove(tn);
         }
+        return currentLongest;
     }
-
+//La complejidad es de O(TreeNode) para todos los metodos de print ya que recorre todo el arbol
     public void printPostorder(TreeNode tn) {
         if(tn == null) {
             System.out.print("-");
@@ -164,9 +173,11 @@ public class Tree {
         System.out.print(tn.getValue()+ " ");
         printInOrder(tn.getRight());
     }
-
+//O(TreeNode) en cualquier caso tiene que recorrer todos los nodos
     public void getFrontera(TreeNode tn, List<TreeNode> list) {
-        if (tn.isLeaf()) list.add(tn);
+        if (tn.isLeaf()) {
+            list.add(tn);
+        }
         if (tn.getLeft() != null) {
             getFrontera(tn.getLeft(), list);
         }
@@ -174,43 +185,36 @@ public class Tree {
             getFrontera(tn.getRight(), list);
         }
     }
-
-/*
-    private TreeNode getLeaf(TreeNode tn) {
-        TreeNode current = tn;
-        if (tn.isLeaf()) return tn;
-        else {
-            current = getLeaf(tn.getLeft());
-            current = getLeaf(tn.getRight());
-        }
-        return null;
-    }
-*/
-
+//O(TreeNode) o de O(height) no esoty muy seguro pero considero el peor de los casos cada nodo ingresado tenga un valor
+// mayor que el anterior, estando todos los getLeft()==null;
     public int getMaxElem(TreeNode tn) {
         TreeNode current = tn;
-        while (current.getRight()!=null)
+        while (current.getRight()!=null) {
             current = current.getRight();
+        }
         return current.getValue();
     }
-
+//Mismo ejemplo anterior solo que devulve el nodo y no el valor, no sabía cual había que implemetar por eso hice ambos
     public TreeNode getMaxElemNode(TreeNode tn) {
         TreeNode current = tn;
-        while (current.getRight()!=null)
+        while (current.getRight()!=null) {
             current = current.getRight();
+        }
         return current;
     }
-
+//
     public void getElemAtLevel(int searchLevel, TreeNode tn, int currentLevel, List<TreeNode> list) {
         TreeNode current = tn;
         if (searchLevel == currentLevel) {
             list.add(tn);
             return;
         }
-        if (currentLevel < searchLevel && tn.getLeft() != null)
-            getElemAtLevel(searchLevel,tn.getLeft(),currentLevel+1, list);
-        if (currentLevel < searchLevel && tn.getRight() != null)
-            getElemAtLevel(searchLevel,tn.getRight(),currentLevel+1, list);
+        if (currentLevel < searchLevel && tn.getLeft() != null) {
+            getElemAtLevel(searchLevel, tn.getLeft(), currentLevel + 1, list);
+        }
+        if (currentLevel < searchLevel && tn.getRight() != null) {
+            getElemAtLevel(searchLevel, tn.getRight(), currentLevel + 1, list);
+        }
     }
 
 }
