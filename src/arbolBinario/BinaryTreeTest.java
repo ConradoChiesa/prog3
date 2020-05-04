@@ -35,6 +35,9 @@ public class BinaryTreeTest {
         ABB.printPreOrder(ABB.getRootNode());
         System.out.println("\n");
         System.out.println("El elemento mayor es: " + ABB.getMaxElem(ABB.getRootNode()));
+
+        System.out.println("El elemento mayor MAXvALUE() es: " + ABB.maxValue(ABB.getRootNode()));
+
         System.out.println("La rama más larga tiene " + ABB.getHeight(ABB.getRootNode()) + " nodos.");
         System.out.println("Es "+ ABB.hasElem(ABB.getRootNode(), DEL) + " que tiene el valor " + DEL);
         System.out.println(ABB.delete(DEL));

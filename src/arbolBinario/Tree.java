@@ -110,6 +110,13 @@ public class Tree {
         return tn.getValue();
     }
 
+    public int maxValue(TreeNode tn) {
+        if (tn.getRight()!=null) {
+            return maxValue(tn.getRight());
+        }
+        return tn.getValue();
+    }
+
     public int getHeight(TreeNode tn) {
         return getNodeHeight(tn);
     }
@@ -122,12 +129,16 @@ public class Tree {
     }
 //  Metodo con fallas de implementación.
 //  Trato de llevar un lista con la rama más larga, si llego a una hoja le pregunto si la lista
-//  actual es mayor a la más larga actual, si pasa eso hago un new y copio la actual a la más larga actual
+//  actual es mayor a la más larga actual, si pasa eso hago un new y copio la actual a la más larga actua
+//
 //  En cualquier caso la complejidad es O(TreeNode) porque debo recorrer todos los nodos preguntando si son hoja
     public List getLongestBranch(List<TreeNode> list, TreeNode tn) {
         List<TreeNode> currentLongest = new ArrayList<>();
+        List<TreeNode> left = new ArrayList<>();
+        List<TreeNode> right = new ArrayList<>();
+
         if (tn.isLeaf()) {
-            if (list.size() > currentLongest.size()) {
+            if (left.size() > right.size()) {
                 currentLongest.clear();// = new ArrayList<>();
                 currentLongest.addAll(list);
             } else {
