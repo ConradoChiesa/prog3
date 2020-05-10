@@ -8,16 +8,18 @@ public class BinaryTreeTest {
     private static int FRONTERA = 2;
     public static void main(String[] args) {
         List<Integer> integerArrayList = new ArrayList<>(MAX);
-        List<TreeNode> elemetAtLevel = new ArrayList<>();
-        List<TreeNode> longestBranch = new ArrayList<>();
+        List<Integer> frontera = new ArrayList<>();
+        List<Integer> elemetAtLevel = new ArrayList<>();
+        List<Integer> longestBranch = new ArrayList<>();
         Tree ABB = new Tree();
-
+//      Hago que el nodo raiz sea el root para borrarlo y ver que pasa.
+//        integerArrayList.add(DEL);
         while (integerArrayList.size()<MAX) {
             int num = (int) Math.floor(Math.random()*40);
             if (!integerArrayList.contains(num)){
                 integerArrayList.add(num);
 //                Descomentar la siguiente linea para imprimir el orden de como se agregan los nodos
-                System.out.println("Agregando :" + num);
+//                System.out.println("Agregando :" + num);
             }
         }
         Iterator<Integer> it = integerArrayList.iterator();
@@ -26,43 +28,40 @@ public class BinaryTreeTest {
         }
         System.out.println("Nodo Raíz: "+ ABB.getRoot() + "\n");
         System.out.println("Impresión en orden");
-        ABB.printInOrder(ABB.getRootNode());
+        ABB.printInOrder();
         System.out.println("\n");
         System.out.println("Impresión en pos orden");
-        ABB.printPostorder(ABB.getRootNode());
+        ABB.printPostorder();
         System.out.println("\n");
         System.out.println("Impresión en pre orden");
-        ABB.printPreOrder(ABB.getRootNode());
+        ABB.printPreOrder();
         System.out.println("\n");
-        System.out.println("El elemento mayor es: " + ABB.getMaxElem(ABB.getRootNode()));
-
-        System.out.println("El elemento mayor MAXvALUE() es: " + ABB.maxValue(ABB.getRootNode()));
-
-        System.out.println("La rama más larga tiene " + ABB.getHeight(ABB.getRootNode()) + " nodos.");
-        System.out.println("Es "+ ABB.hasElem(ABB.getRootNode(), DEL) + " que tiene el valor " + DEL);
+        System.out.println("El elemento mayor es: " + ABB.maxValue());
+        System.out.println("La rama más larga tiene " + ABB.getHeight() + " nodos.");
+        System.out.println("Es "+ ABB.hasElem(DEL) + " que tiene el valor " + DEL);
         System.out.println(ABB.delete(DEL));
-        ABB.printInOrder(ABB.getRootNode());
-        List<TreeNode> frontera = new ArrayList<>();
-        ABB.getFrontera(ABB.getRootNode(), frontera);
+        System.out.println("Nodo Raíz: "+ ABB.getRoot() + "\n");
+        ABB.printInOrder();
+        ABB.getFrontera(frontera);
         System.out.println("\n");
         System.out.println("Impresión de fronteras");
-        for (TreeNode tn :
+        for (Integer tn :
                 frontera) {
-            System.out.print(tn.getValue() + " ");
+            System.out.print(tn + " ");
         }
-        ABB.getElemAtLevel(FRONTERA, ABB.getRootNode(), 0, elemetAtLevel);
+        ABB.getElemAtLevel(FRONTERA, elemetAtLevel);
         System.out.println("\n");
         System.out.println("Impresión de nivel " + FRONTERA);
-        for (TreeNode tn :
+        for (Integer tn :
                 elemetAtLevel) {
-            System.out.print(tn.getValue() + " ");
+            System.out.print(tn + " ");
         }
-        ABB.getLongestBranch(longestBranch, ABB.getRootNode());
+        longestBranch = ABB.getLongestBranch();
         System.out.println("\n");
         System.out.println("Impresion longestBranch");
-        for (TreeNode tn :
+        for (Integer tn :
                 longestBranch) {
-            System.out.print(tn.getValue() + " ");
+            System.out.print(tn + " ");
         }
     }
 }

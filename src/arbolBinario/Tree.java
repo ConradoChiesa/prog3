@@ -13,14 +13,17 @@ public class Tree {
         this.deleted = false;
     }
 
-    public TreeNode getRootNode() {
-        return this.root;
+    // O(1) simplemente busca el valor en la variable
+    public int getRoot() {
+        return this.root.getValue();
     }
 
+    // O(1)
     public boolean isEmpty() {
         return this.root == null;
     }
 
+    // O(heigth) en el peor de los casos el nodo a insertar pasara a ser nodo hoja
     public void add(int value) {
         if (this.root == null)
             this.root = new TreeNode(value);
@@ -28,42 +31,52 @@ public class Tree {
             this.add(this.root, value);
     }
 
-    public int getRoot() {
-        return this.root.getValue();
-    }
-
     private void add(TreeNode actual, int value) {
         if (actual.getValue() > value) {
             if (actual.getLeft() == null) {
                 TreeNode temp = new TreeNode(value);
                 actual.setLeft(temp);
-            } else
-                add(actual.getLeft(),value);
+            } else {
+                add(actual.getLeft(), value);
+            }
         } else {
             if (actual.getRight() == null) {
                 TreeNode temp = new TreeNode(value);
                 actual.setRight(temp);
-            } else
+            } else {
                 add(actual.getRight(), value);
+            }
         }
     }
 
-    public boolean hasElem( TreeNode tn, int sherching) {
+    // O(heigt) En el peor de los casos el elemento es hoja de la rama mas larga
+    public boolean hasElem(int sherching) {
+        return hasElem(this.root, sherching);
+    }
+
+    private boolean hasElem( TreeNode tn, int sherching) {
+        boolean hasIt;
         if (tn == null) {
             return false;
         }
         if (tn.getValue() == sherching) {
             return true;
         }
-        boolean hasIt1 = hasElem(tn.getLeft(), sherching);
-        if(hasIt1) {
-            return true;
+        if (sherching < tn.getValue()) {
+             hasIt = hasElem(tn.getLeft(), sherching);
+            if(hasIt) {
+                return true;
+            }
+
+        } else {
+            hasIt = hasElem(tn.getRight(), sherching);
+            return hasIt;
         }
-        boolean hasIt2 = hasElem(tn.getRight(), sherching);
-        return hasIt2;
+        return hasIt;
     }
 
-//Este metodo quería no se void porque era el camino facíl y me encapriche con el boolean
+    //  Este metodo quería no se void porque era el camino facíl y me encapriche con el boolean
+    //  O(heigth)
     public boolean delete(int value) {
         boolean deleted;
         deleteNode(this.root, value);
@@ -103,6 +116,7 @@ public class Tree {
         return this.deleted;
     }
 
+    //  O(heigth del subarbol izq) Este y el sigiente metodo revisa los nodos hasta un maxímo de la mitad de los nodos del subarbol
     private int minValue(TreeNode tn) {
         if(tn.getLeft() != null) {
             return minValue(tn.getLeft());
@@ -110,15 +124,20 @@ public class Tree {
         return tn.getValue();
     }
 
-    public int maxValue(TreeNode tn) {
+    public int maxValue() {
+        return maxValue(this.root);
+    }
+    //  O(Height del subarbol derecho)
+    private int maxValue(TreeNode tn) {
         if (tn.getRight()!=null) {
             return maxValue(tn.getRight());
         }
         return tn.getValue();
     }
 
-    public int getHeight(TreeNode tn) {
-        return getNodeHeight(tn);
+    //  O(nodos) Se deben recorrer todos los nodos
+    public int getHeight() {
+        return getNodeHeight(this.root);
     }
 
     private int getNodeHeight(TreeNode tn) {
@@ -127,38 +146,45 @@ public class Tree {
         }
         return Math.max(getNodeHeight(tn.getLeft()), getNodeHeight(tn.getRight()))+1;
     }
-//  Metodo con fallas de implementación.
-//  Trato de llevar un lista con la rama más larga, si llego a una hoja le pregunto si la lista
-//  actual es mayor a la más larga actual, si pasa eso hago un new y copio la actual a la más larga actua
-//
-//  En cualquier caso la complejidad es O(TreeNode) porque debo recorrer todos los nodos preguntando si son hoja
-    public List getLongestBranch(List<TreeNode> list, TreeNode tn) {
-        List<TreeNode> currentLongest = new ArrayList<>();
-        List<TreeNode> left = new ArrayList<>();
-        List<TreeNode> right = new ArrayList<>();
+
+    //  O(Nodos) En cualquiera de los casos tengo que recorrer todos los nodos para preguntarles si son hoja
+    public List getLongestBranch() {
+        return getLongestBranch(this.root);
+    }
+
+    private List getLongestBranch(TreeNode tn) {
+        List<Integer> currentLongest = new ArrayList<>();
+        List<Integer> left = new ArrayList<>();
+        List<Integer> right = new ArrayList<>();
 
         if (tn.isLeaf()) {
-            if (left.size() > right.size()) {
-                currentLongest.clear();// = new ArrayList<>();
-                currentLongest.addAll(list);
+            currentLongest.add(tn.getValue());
+            return currentLongest;
+        } else {
+            if (tn.getLeft() != null) {
+                left.add(tn.getValue());
+                left.addAll(getLongestBranch(tn.getLeft()));
+            }
+            if (tn.getRight() != null) {
+                right.add(tn.getValue());
+                right.addAll(getLongestBranch(tn.getRight()));
+            }
+            //En este caso si las listas son iguales retorna la de menores valores
+            if (right.size() > left.size()) {
+                currentLongest.addAll(right);
             } else {
-                list.clear();
+                currentLongest.addAll(left);
             }
         }
-        if (tn.getLeft() != null) {
-            list.add(tn);
-            getLongestBranch(list, tn.getLeft());
-        }
-        if (tn.getRight() != null) {
-            list.add(tn);
-            getLongestBranch(list, tn.getRight());
-        }
-//        list.clear();
         return currentLongest;
     }
 
-//La complejidad es de O(TreeNode) para todos los metodos de print ya que recorre todo el arbol
-    public void printPostorder(TreeNode tn) {
+    //  O(nodos) para todos los metodos de print ya que recorre todo el arbol
+    public void printPostorder() {
+        printPostorder(this.root);
+    }
+
+    private void printPostorder(TreeNode tn) {
         if(tn == null) {
             System.out.print("-");
             return;
@@ -168,7 +194,11 @@ public class Tree {
         System.out.print(tn.getValue()+ " ");
     }
 
-    public void printPreOrder(TreeNode tn) {
+    public void printPreOrder() {
+        printPreOrder(this.root);
+    }
+
+    private void printPreOrder(TreeNode tn) {
         if(tn == null) {
             System.out.print("-");
             return;
@@ -178,7 +208,11 @@ public class Tree {
         printPreOrder(tn.getRight());
     }
 
-    public void printInOrder(TreeNode tn) {
+    public void printInOrder() {
+        printInOrder(this.root);
+    }
+
+    private void printInOrder(TreeNode tn) {
         if(tn == null) {
             System.out.print("-");
             return;
@@ -187,10 +221,15 @@ public class Tree {
         System.out.print(tn.getValue()+ " ");
         printInOrder(tn.getRight());
     }
-//O(TreeNode) en cualquier caso tiene que recorrer todos los nodos
-    public void getFrontera(TreeNode tn, List<TreeNode> list) {
+
+    //  O(heigth) en cualquier caso no recorre más que la altura
+    public void getFrontera(List<Integer> list) {
+        getFrontera(this.root, list);
+    }
+
+    private void getFrontera(TreeNode tn, List<Integer> list) {
         if (tn.isLeaf()) {
-            list.add(tn);
+            list.add(tn.getValue());
         }
         if (tn.getLeft() != null) {
             getFrontera(tn.getLeft(), list);
@@ -199,35 +238,23 @@ public class Tree {
             getFrontera(tn.getRight(), list);
         }
     }
-//O(TreeNode) o de O(height) no esoty muy seguro pero considero el peor de los casos cada nodo ingresado tenga un valor
-// mayor que el anterior, estando todos los getLeft()==null;
-    public int getMaxElem(TreeNode tn) {
-        TreeNode current = tn;
-        while (current.getRight()!=null) {
-            current = current.getRight();
-        }
-        return current.getValue();
+
+    //  O(sumatoria desde 0 hasta nivel de 2^nivel) Va a recorrer los nodos del nivel solicitado más los nodos de los niveles anteriores
+    public void getElemAtLevel(int searchLevel, List<Integer> elemAtLevel) {
+        getElemAtLevel(searchLevel, this.root, 0, elemAtLevel);
     }
-//Mismo ejemplo anterior solo que devulve el nodo y no el valor, no sabía cual había que implemetar por eso hice ambos
-    public TreeNode getMaxElemNode(TreeNode tn) {
-        TreeNode current = tn;
-        while (current.getRight()!=null) {
-            current = current.getRight();
-        }
-        return current;
-    }
-//
-    public void getElemAtLevel(int searchLevel, TreeNode tn, int currentLevel, List<TreeNode> list) {
+
+    private void getElemAtLevel(int searchLevel, TreeNode tn, int currentLevel, List<Integer> elemAtLevel) {
         TreeNode current = tn;
         if (searchLevel == currentLevel) {
-            list.add(tn);
+            elemAtLevel.add(tn.getValue());
             return;
         }
         if (currentLevel < searchLevel && tn.getLeft() != null) {
-            getElemAtLevel(searchLevel, tn.getLeft(), currentLevel + 1, list);
+            getElemAtLevel(searchLevel, tn.getLeft(), currentLevel + 1, elemAtLevel);
         }
         if (currentLevel < searchLevel && tn.getRight() != null) {
-            getElemAtLevel(searchLevel, tn.getRight(), currentLevel + 1, list);
+            getElemAtLevel(searchLevel, tn.getRight(), currentLevel + 1, elemAtLevel);
         }
     }
 
