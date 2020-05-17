@@ -10,53 +10,80 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	public GrafoDirigido() {
 		vertices = new ArrayList<>();
 	}
-
+// O(vertices.size() En el peor de los casos va a buscar hasta en el utlimo elemento
 	private int getIndex(Vertice v) {
 		return vertices.indexOf(v);
 	}
 
+// O(vertices.size()) Va a buscar en todas las posiciones y si no lo contiene lo agrega al final
 	@Override
-	public void agregarVertice(int verticeId) {
+	public boolean agregarVertice(int verticeId) {
 		// TODO Auto-generated method stub
+		boolean added = false;
 		Vertice v = new Vertice(verticeId);
 		if (!vertices.contains(v)) {
-			vertices.add(v);
+			added = vertices.add(v);
 		}
+		return added;
 	}
 
+// O(vertices.size() + total de arcos) va a recorrer tod slos vertices y preguntar a todos los arcos de cada
+// vertice si tiene como destino el vertice que se desea borrar borrar
 	@Override
-	public void borrarVertice(int verticeId) {
+	public boolean borrarVertice(int verticeId) {
 		// TODO Auto-generated method stub
-		Vertice v = new Vertice(verticeId);
-//		hacer cosas acá no es borrar así nomas
-		vertices.remove(v);
-	}
-
-	@Override
-	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
-		// TODO Auto-generated method stub
-		Vertice v1 = new Vertice(verticeId1);
-		Vertice v2 = new Vertice(verticeId2);
-		if (vertices.contains(v1) && vertices.contains(v2)) {
-			if (!existeArco(verticeId1, verticeId2)) {
-				Arco a = new Arco(verticeId1, verticeId2, etiqueta);
-				Vertice current = vertices.get(getIndex(v1));
-				current.setArcos(a);
+		if (contieneVertice(verticeId)) {
+			Vertice verticeToDelete = vertices.get(getIndex(new Vertice(verticeId)));
+			ArrayList<Arco> arcos = new ArrayList<>();
+			Iterator<Vertice> verticeIterator = vertices.iterator();
+			while (verticeIterator.hasNext()) {
+				Vertice current = verticeIterator.next();
+				arcos.addAll(current.getArcos());
+				Iterator<Arco> arcoIterator = arcos.iterator();
+				while (arcoIterator.hasNext()) {
+					if (arcoIterator.next().getVerticeDestino() == verticeId) {
+						System.out.println("Borrando");
+						borrarArco(current.getValor(), verticeId);
+					}
+				}
+				arcos.clear();
 			}
+		return vertices.remove(verticeToDelete);
 		}
+		return false;
 	}
 
+// O(verices.size()) recorre todos los vertices buscando que existan y luego luego agrega el arco si no existe
 	@Override
-	public void borrarArco(int verticeId1, int verticeId2) {
+	public boolean agregarArco(int verticeId1, int verticeId2, T etiqueta) {
 		// TODO Auto-generated method stub
-		Vertice current = new Vertice(verticeId1);
-		current = vertices.get(getIndex(current));
-		Arco a = new Arco(verticeId1, verticeId2, null);
-		if (current.delete(a)) {
-			System.out.println("Arco borrado");
+		boolean added = false;
+		if (contieneVertice(verticeId1) && contieneVertice(verticeId2)) {
+			Vertice current = new Vertice(verticeId1);
+				if (!existeArco(verticeId1, verticeId2)) {
+					Arco a = new Arco(verticeId1, verticeId2, etiqueta);
+					current = vertices.get(getIndex(current));
+					added = current.setArcos(a);
+				}
 		}
+		return added;
 	}
 
+// O()
+	@Override
+	public boolean borrarArco(int verticeId1, int verticeId2) {
+		// TODO Auto-generated method stub
+		boolean deleted = false;
+		if (existeArco(verticeId1, verticeId2)) {
+			Vertice current = new Vertice(verticeId1);
+			current = vertices.get(getIndex(current));
+			Arco a = new Arco(verticeId1, verticeId2, null);
+			deleted = current.delete(a);
+		}
+		return deleted;
+	}
+
+// O(vertices) En el peor de los casos recorre todos vertices de la lista
 	@Override
 	public boolean contieneVertice(int verticeId) {
 		// TODO Auto-generated method stub
@@ -64,21 +91,24 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return vertices.contains(current);
 	}
 
+// O(arcos.size()) va a iterar todos los arcos de un vertice determinado
 	@Override
 	public boolean existeArco(int verticeId1, int verticeId2) {
 		// TODO Auto-generated method stub
 		Vertice v1 = new Vertice(verticeId1);
-		int index = getIndex(v1);
-		v1 = vertices.get(index);
-		Iterator<Arco> it = v1.getArcos().iterator();
-		while (it.hasNext()) {
-			if (it.next().getVerticeDestino()==verticeId2) {
-				return true;
+		if (vertices.contains(v1)) {
+			v1 = vertices.get(getIndex(v1));
+			Iterator<Arco> it = v1.getArcos().iterator();
+			while (it.hasNext()) {
+				if (it.next().getVerticeDestino()==verticeId2) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 // Devuelve la ultima que tenga los 2 vertices, esta mal? no debería agregar 2 arcos a 2 mismos vertices
+// O(arcos.size()) Itera por todos los arcos buscando los vertices correspondientes
 	@Override
 	public Arco<T> obtenerArco(int verticeId1, int verticeId2) {
 		// TODO Auto-generated method stub
@@ -99,12 +129,33 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return aux;
 	}
 
+// Otra manera de obtener el arco si existe si no retorna null, el anterior devolvia un arco vacío en el peor de los casos
+	public Arco<T> obtenerArco2(int verticeId1, int verticeId2) {
+		// TODO Auto-generated method stub
+		Vertice current = new Vertice(verticeId1);
+		if (vertices.contains(current) && vertices.contains(new Vertice(verticeId2))) {
+			int index = getIndex(current);
+			Vertice v = vertices.get(index);
+			Iterator<Arco> it = v.getArcos().iterator();
+			while (it.hasNext()) {
+				Arco a = it.next();
+				if (a.getVerticeOrigen()==verticeId1 && a.getVerticeDestino() == verticeId2) {
+					return a;
+				}
+
+			}
+		}
+		return null;
+	}
+
+//	O(1) Consulta a un metodo de la lista que consulta a una variable
 	@Override
 	public int cantidadVertices() {
 		// TODO Auto-generated method stub
 		return vertices.size();
 	}
 
+// O(vertices.size()) recorre los vertices y pregunta por el size y lo suma
 	@Override
 	public int cantidadArcos() {
 		// TODO Auto-generated method stub
@@ -133,14 +184,13 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		};
 		return it;
 	}
-// tengo dudas con este metodo
+
+// O(arcos.size()) va a recorrar todos los arcos del vertice devolviendo los vertices destino
 	@Override
 	public Iterator<Integer> obtenerAdyacentes(int verticeId) {
 		// TODO Auto-generated method stub
-		Vertice current = new Vertice(verticeId);
-		current = vertices.get(getIndex(current));
-		Vertice finalCurrent = current; // acá
-		Iterator<Integer> it = new Iterator<Integer>() {
+		Vertice finalCurrent = vertices.get(getIndex(new Vertice(verticeId)));
+		Iterator<Integer> it = new Iterator() {
 			private int index = 0;
 			@Override
 			public boolean hasNext() {
@@ -148,7 +198,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 			}
 
 			@Override
-			public Integer next() {// acá
+			public Integer next() {
 				Arco a = (Arco) finalCurrent.getArcos().get(index++);
 				return a.getVerticeDestino();
 			}
@@ -156,48 +206,26 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return it;
 	}
 
+// O(vertices.size()) Itera por los vertices pidiendo y guardando todos los arcos que tenga
 	@Override
 	public Iterator<Arco<T>> obtenerArcos() {
 		// TODO Auto-generated method stub
 		ArrayList<Arco<T>> aux = new ArrayList<>();
-		for (Vertice v :
-				vertices) {
-			aux.addAll(v.getArcos());
+		Iterator<Vertice> it = vertices.iterator();
+		while (it.hasNext()) {
+			aux.addAll(it.next().getArcos());
 		}
 		return aux.iterator();
-/*
-		Iterator<Arco<T>> it = new Iterator<Arco<T>>() {
-			private int indexVertice = 0;
-			private int indexArco = 0;
-
-			@Override
-			public boolean hasNext() {
-				return indexVertice < vertices.size() && vertices.get(indexVertice) != null;
-			}
-
-			@Override
-			public Arco next() {
-				Arco a = new Arco();
-				if (indexArco < vertices.get(indexVertice).getArcos().size()) {
-					a = (Arco) vertices.get(indexVertice).getArcos().get(indexArco++);
-				} else {
-					indexVertice++;
-					indexArco = 0;
-				}
-				return a;
-			}
-		};
-		return it;
-*/
 	}
 
+// O(1) Devuelve el iterador de arcos del vertice solicitado la complejidad queda fuera del metodo
 	@Override
 	public Iterator<Arco<T>> obtenerArcos(int verticeId) {
 		// TODO Auto-generated method stub
-		Vertice current = new Vertice(verticeId);
-		current = vertices.get(getIndex(current));
-		Iterator curre = current.getArcos().iterator();
-		return curre;
+		return vertices.get(getIndex(new Vertice(verticeId))).getArcos().iterator();
 	}
-
+// Idem metodo anterior
+	public boolean isFinal(int verticeId) {
+		 return vertices.get(getIndex(new Vertice(verticeId))).getArcos().isEmpty();
+	}
 }

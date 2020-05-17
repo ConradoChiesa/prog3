@@ -18,8 +18,8 @@ public class Vertice<T> {
         return arcos;
     }
 
-    public void setArcos(Arco a) {
-        this.arcos.add(a);
+    public boolean setArcos(Arco a) {
+        return this.arcos.add(a);
     }
 
     public boolean delete(Arco a) {
@@ -42,6 +42,5 @@ public class Vertice<T> {
     public int hashCode() {
         return Objects.hash(valor);
     }
-
 
 }
