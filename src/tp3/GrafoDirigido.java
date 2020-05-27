@@ -53,7 +53,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return false;
 	}
 
-// O(verices.size()) recorre todos los vertices buscando que existan y luego luego agrega el arco si no existe
+// O(verices.size() + arcos.size()) recorre todos los vertices buscando que existan y luego recorre todos los arcos del vertice origen
 	@Override
 	public boolean agregarArco(int verticeId1, int verticeId2, T etiqueta) {
 		// TODO Auto-generated method stub
@@ -69,7 +69,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return added;
 	}
 
-// O()
+// O(verices.size() + arcos.size()) Recorre todos los vertices y todos los arcos
 	@Override
 	public boolean borrarArco(int verticeId1, int verticeId2) {
 		// TODO Auto-generated method stub
@@ -91,7 +91,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return vertices.contains(current);
 	}
 
-// O(arcos.size()) va a iterar todos los arcos de un vertice determinado
+// O(verices.size() + arcos.size()) Itera todos los vertices y todos los arcos del vertice origen
 	@Override
 	public boolean existeArco(int verticeId1, int verticeId2) {
 		// TODO Auto-generated method stub
@@ -107,9 +107,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		}
 		return false;
 	}
-// Devuelve la ultima que tenga los 2 vertices, esta mal? no debería agregar 2 arcos a 2 mismos vertices
-// O(arcos.size()) Itera por todos los arcos buscando los vertices correspondientes
-	@Override
+/*
+	@Deprecated
 	public Arco<T> obtenerArco(int verticeId1, int verticeId2) {
 		// TODO Auto-generated method stub
 		Vertice current = new Vertice(verticeId1);
@@ -128,9 +127,11 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		}
 		return aux;
 	}
+*/
 
-// Otra manera de obtener el arco si existe si no retorna null, el anterior devolvia un arco vacío en el peor de los casos
-	public Arco<T> obtenerArco2(int verticeId1, int verticeId2) {
+// O(verices.size() + arcos.size()) Itera todos los vertices y luego Itera por todos los arcos buscando los vertices correspondientes
+	@Override
+	public Arco<T> obtenerArco(int verticeId1, int verticeId2) {
 		// TODO Auto-generated method stub
 		Vertice current = new Vertice(verticeId1);
 		if (vertices.contains(current) && vertices.contains(new Vertice(verticeId2))) {
