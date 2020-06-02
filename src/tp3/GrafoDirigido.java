@@ -87,8 +87,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	@Override
 	public boolean contieneVertice(int verticeId) {
 		// TODO Auto-generated method stub
-		Vertice current = new Vertice(verticeId);
-		return vertices.contains(current);
+//		Vertice current = new Vertice(verticeId);
+		return vertices.contains(new Vertice(verticeId));
 	}
 
 // O(verices.size() + arcos.size()) Itera todos los vertices y todos los arcos del vertice origen
