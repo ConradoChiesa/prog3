@@ -1,4 +1,4 @@
-package tp4.entregable04;
+package tp5.entregable05;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ public class DiaDeVisita {
 
     public DiaDeVisita(int idDia) {
         this.familias = new ArrayList<>();
-        this.cupoPersonas = 340;
+        this.cupoPersonas = 30;
         this.visitantes = 0;
         this.idDia = idDia;
     }
@@ -40,13 +40,6 @@ public class DiaDeVisita {
         if (agregados) {
             visitantes += f.miembros();
         }
-        /*
-        boolean agregados = false;
-        if (visitantes <= lugaresDisponibles()) {
-            this.visitantes += visitantes;
-            agregados = true;
-        }
-        */
         return agregados;
     }
 

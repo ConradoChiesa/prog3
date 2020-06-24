@@ -14,29 +14,29 @@ private static ArrayList<Integer> solucionMayor = new ArrayList<>();
     public static void maximaCantidadSalas(GrafoDirigido conjuntoSalas, ArrayList<Integer> solucionActual, int salaActual, int salida) {
         
         if (salaActual == salida) {
-            solucionActual.add(salaActual);
+//            solucionActual.add(salaActual);
             if (solucionMayor.size() < solucionActual.size()) {
                 solucionMayor.clear();
                 solucionMayor.addAll(solucionActual);
+                System.out.println(solucionMayor);
             }
+//            solucionActual.remove(solucionActual.size()-1);
         } else {
-            salaActual++;
-            solucionActual.add(salaActual);
+//            solucionActual.add(salaActual);
             Iterator<Arco> puertasSalaActual = conjuntoSalas.obtenerArcos(salaActual);
             while (puertasSalaActual.hasNext()) {
+//                solucionActual.add(salaActual);
                 Arco puerta = puertasSalaActual.next();
-                solucionActual.add(salaActual);
-                maximaCantidadSalas(conjuntoSalas, solucionActual, salaActual, salida);
+                solucionActual.add(puerta.getVerticeDestino());
+                maximaCantidadSalas(conjuntoSalas, solucionActual, puerta.getVerticeDestino(), salida);
                 solucionActual.remove(solucionActual.size()-1);
             }
-            salaActual--;
+//            solucionActual.remove(solucionActual.size()-1);
         }
-        System.out.println(solucionMayor.size()+", "+ solucionActual.size());
     }
 
     public static void main(String[] args) {
         GrafoDirigido conjuntoSalas = new GrafoDirigido();
-        ArrayList<Integer> solucionMayor = new ArrayList<>();
         ArrayList<Integer> solucionActual = new ArrayList<>();
         conjuntoSalas.agregarVertice(0);
         conjuntoSalas.agregarVertice(1);

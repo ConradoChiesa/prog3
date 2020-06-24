@@ -2,26 +2,37 @@ package tp4.entregable04;
 
 import java.util.Arrays;
 
-import static tp4.entregable04.GlobalVar.DIAS_PREFERIDOS;
+import static tp5.entregable05.GlobalVar.DIAS_PREFERIDOS;
 
 /* Una familia, con su cantidad de dias, y una arreglo con el top de 4 dias preferidos */
 public class Familia implements Comparable {
 
 	private int id;
 	private int miembros;
+	private int diaAsignado;
 	private int[] diasPreferidos;
+
 
 	public Familia() {
 		this.id = 0;
 		this.miembros = 0;
 		this.diasPreferidos = new int[DIAS_PREFERIDOS];
+		this.diaAsignado = 0;
 
 	}
 
+	public int getDiaAsignado() {
+		return diaAsignado;
+	}
+
+	public void setDiaAsignado(int diaAsignado) {
+		this.diaAsignado = diaAsignado;
+	}
 	public Familia(int id, int miembros, int... diasPreferidos) {
 		this.id = id;
 		this.miembros = miembros;
 		this.diasPreferidos = diasPreferidos;
+		this.diaAsignado = 0;
 	}
 
 	/* Id de la familia */
@@ -57,7 +68,7 @@ public class Familia implements Comparable {
 
 	@Override
 	public String toString() {
-		return "Familia: id=" + id + ", miembros=" + miembros + ", preferencias=" + Arrays.toString(diasPreferidos) + "\n";
+		return "Familia: id=" + id + ", miembros=" + miembros + ", preferencias=" + Arrays.toString(diasPreferidos) +" Asignado: " + diaAsignado + "\n";
 	}
 
 	@Override

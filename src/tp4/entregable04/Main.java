@@ -12,7 +12,10 @@ public class Main {
 		
 		ArrayList<Familia> familias = reader.read();
 		TallerEspacial te = new TallerEspacial(familias);
-		te.distribuirFamilias();
+
+		Solucion s = te.distribuirFamilias2();
+		System.out.println("El bono es de U$S" + s.getBono());
+		System.out.println(s.getDiasDeVisita());
 		/*
 		for (Familia familia: familias)
 			System.out.println(familia);
