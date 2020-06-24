@@ -15,9 +15,17 @@ public class DiaDeVisita {
         this.idDia = idDia;
     }
 
+    public DiaDeVisita(int idDia, ArrayList<Familia> familias, int visitantes) {
+        this.familias = familias;
+        this.cupoPersonas = 30;
+        this.visitantes = visitantes;
+        this.idDia = idDia;
+    }
+
     public int getIdDia() {
         return idDia;
     }
+
 
     public int getCupoPersonas() {
         return cupoPersonas;
@@ -69,4 +77,5 @@ public class DiaDeVisita {
                 " visitantes=" + visitantes +
                 '}';
     }
+
 }

@@ -8,7 +8,8 @@ public class Solucion {
     private int bono;
 
     public Solucion(ArrayList<DiaDeVisita> diasDeVisita, int bono) {
-        this.diasDeVisita = diasDeVisita;
+        this.diasDeVisita = new ArrayList<>();
+        this.diasDeVisita.addAll(diasDeVisita);
         this.bono = bono;
     }
 

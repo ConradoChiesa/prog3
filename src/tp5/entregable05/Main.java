@@ -12,12 +12,11 @@ public class Main {
 		CSVReader reader = new CSVReader("/home/konrad/Documentos/prog3/src/tp5/entregable05/familias-2.csv");
 		
 		ArrayList<Familia> familias = reader.read();
-
 		TallerEspacial te = new TallerEspacial(familias);
 
 		Solucion s = te.distribuirFamilias();
 		System.out.println("El bono es de U$S" + s.getBono());
-		System.out.println(s.getDiasDeVisita());
+		System.out.println(s.getDiasDeVisita().toString());
 /*
 		Iterator it = familias.get(0).itDiasPreferidos();
 		while (it.hasNext()) {
