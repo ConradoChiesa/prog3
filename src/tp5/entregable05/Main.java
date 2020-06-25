@@ -7,36 +7,28 @@ public class Main {
 
 	
 	public static void main(String... args) {
-		
-		
-		CSVReader reader = new CSVReader("/home/konrad/Documentos/prog3/src/tp5/entregable05/familias-2.csv");
+
+		CSVReader reader = new CSVReader("/home/konrad/Documentos/prog3/src/tp5/entregable05/familias-1.csv");
 		
 		ArrayList<Familia> familias = reader.read();
-		TallerEspacial te = new TallerEspacial(familias);
+		TallerEspacial te1 = new TallerEspacial();
 
-		Solucion s = te.distribuirFamilias();
-		System.out.println("El bono es de U$S" + s.getBono());
-		System.out.println(s.getDiasDeVisita().toString());
-/*
-		Iterator it = familias.get(0).itDiasPreferidos();
-		while (it.hasNext()) {
-			System.out.print("Dia: "+ it.next());
-		}
-*/
-
-/*
-
-		for (Familia familia: familias)
-			System.out.println(familia);
-
-
+		System.out.print("\n");
+		System.out.println("Procesando DATASET 1");
+		Solucion s1 = te1.distribuirFamilias(familias);
+		System.out.println("Estados visitados: " + s1.getEstadosVisitados());
+		System.out.println("El bono es de U$S" + s1.getBono());
+		System.out.println(s1.getDiasDeVisita().toString());
 		CSVReader reader2 = new CSVReader("/home/konrad/Documentos/prog3/src/tp5/entregable05//familias-2.csv");
-		
+
 		ArrayList<Familia> familias2 = reader2.read();
+		TallerEspacial te2 = new TallerEspacial();
 
-		for (Familia familia: familias2)
-			System.out.println(familia);
-*/
-
+		System.out.print("\n");
+		System.out.println("Procesando DATASET 2");
+		Solucion s2 = te2.distribuirFamilias(familias2);
+		System.out.println("Estados visitados: " + s2.getEstadosVisitados());
+		System.out.println("El bono es de U$S" + s2.getBono());
+		System.out.println(s2.getDiasDeVisita().toString());
 	}
 }

@@ -7,10 +7,13 @@ public class Solucion {
 
     private int bono;
 
-    public Solucion(ArrayList<DiaDeVisita> diasDeVisita, int bono) {
+    private int estadosVisitados;
+
+    public Solucion(ArrayList<DiaDeVisita> diasDeVisita, int bono, int estadosVisitados) {
         this.diasDeVisita = new ArrayList<>();
         this.diasDeVisita.addAll(diasDeVisita);
         this.bono = bono;
+        this.estadosVisitados = estadosVisitados;
     }
 
     public ArrayList<DiaDeVisita> getDiasDeVisita() {
@@ -20,4 +23,9 @@ public class Solucion {
     public int getBono() {
         return bono;
     }
+
+    public int getEstadosVisitados() {
+        return estadosVisitados;
+    }
+
 }

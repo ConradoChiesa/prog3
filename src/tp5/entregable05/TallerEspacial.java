@@ -2,41 +2,48 @@ package tp5.entregable05;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import static tp5.entregable05.GlobalVar.DIAS_DE_APERTURA;
 
 public class TallerEspacial {
 
     private ArrayList<Familia> familiasVisitantes;
+
     private ArrayList<DiaDeVisita> diasDeVisita;
+
     private ArrayList<DiaDeVisita> diasDeVisitaMejor;
+
     private int mejorBono;
 
-    public TallerEspacial(ArrayList<Familia> familiasVisitantes) {
-        this.familiasVisitantes = familiasVisitantes;
+    private int estadosVisitados;
+
+    public TallerEspacial() {
+        this.familiasVisitantes = new ArrayList<>();
         this.diasDeVisitaMejor = new ArrayList<>();
         this.diasDeVisita = new ArrayList<>();
         for (int i = 0; i < DIAS_DE_APERTURA; i++) {
             diasDeVisita.add(new DiaDeVisita(i+1));
         }
         this.mejorBono = Integer.MAX_VALUE;
+        this.estadosVisitados = 0;
     }
 
-    public Solucion distribuirFamilias() {
+    public Solucion distribuirFamilias(ArrayList<Familia> familiasVisitantes) {
+        this.familiasVisitantes.addAll(familiasVisitantes);
         distribuirFamilias(0, 0);
-        return new Solucion(diasDeVisitaMejor, mejorBono);
+        return new Solucion(diasDeVisitaMejor, mejorBono, estadosVisitados);
     }
 
     private void distribuirFamilias(int bonoActual, int index) {
         if (bonoActual > mejorBono) return;
         if (index == familiasVisitantes.size()) {
-            if (bonoActual < mejorBono) {
+//            if (bonoActual < mejorBono) {
                 mejorBono = bonoActual;
                 diasDeVisitaMejor.clear();
                 for (DiaDeVisita dia : diasDeVisita)
                     diasDeVisitaMejor.add(new DiaDeVisita(dia.getIdDia(), dia.getFamilias(), dia.getVisitantes()));
-            }
+//            }
         } else {
+            estadosVisitados++;
             Familia fliaActual = familiasVisitantes.get(index);
             Iterator<Integer> itDiasPreferidos = fliaActual.itDiasPreferidos();
             while (itDiasPreferidos.hasNext()) {
