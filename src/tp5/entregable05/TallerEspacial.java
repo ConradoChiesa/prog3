@@ -34,28 +34,28 @@ public class TallerEspacial {
     }
 
     private void distribuirFamilias(int bonoActual, int index) {
-        if (bonoActual > mejorBono) return;
-        if (index == familiasVisitantes.size()) {
-//            if (bonoActual < mejorBono) {
-                mejorBono = bonoActual;
-                diasDeVisitaMejor.clear();
-                for (DiaDeVisita dia : diasDeVisita)
-                    diasDeVisitaMejor.add(new DiaDeVisita(dia.getIdDia(), dia.getFamilias(), dia.getVisitantes()));
-//            }
-        } else {
-            estadosVisitados++;
-            Familia fliaActual = familiasVisitantes.get(index);
-            Iterator<Integer> itDiasPreferidos = fliaActual.itDiasPreferidos();
-            while (itDiasPreferidos.hasNext()) {
-                int diaSeleccionado = itDiasPreferidos.next();
-                if (diasDeVisita.get(diaSeleccionado-1).lugaresDisponibles() >= fliaActual.miembros()) {
-                    adjudicarDiaA(fliaActual, diaSeleccionado);
-                    index++;
-                    bonoActual += calcularBonoFlia(fliaActual);
-                    distribuirFamilias(bonoActual, index);
-                    bonoActual -= calcularBonoFlia(fliaActual);
-                    quitarFamilia(fliaActual);
-                    index--;
+
+        if (bonoActual < mejorBono) {
+            if (index == familiasVisitantes.size()) {
+                    mejorBono = bonoActual;
+                    diasDeVisitaMejor.clear();
+                    for (DiaDeVisita dia : diasDeVisita)
+                        diasDeVisitaMejor.add(new DiaDeVisita(dia.getIdDia(), dia.getFamilias(), dia.getVisitantes()));
+            } else {
+                estadosVisitados++;
+                Familia fliaActual = familiasVisitantes.get(index);
+                Iterator<Integer> itDiasPreferidos = fliaActual.itDiasPreferidos();
+                while (itDiasPreferidos.hasNext()) {
+                    int diaSeleccionado = itDiasPreferidos.next();
+                    if (diasDeVisita.get(diaSeleccionado-1).lugaresDisponibles() >= fliaActual.miembros()) {
+                        adjudicarDiaA(fliaActual, diaSeleccionado);
+                        index++;
+                        bonoActual += calcularBonoFlia(fliaActual);
+                        distribuirFamilias(bonoActual, index);
+                        bonoActual -= calcularBonoFlia(fliaActual);
+                        quitarFamilia(fliaActual);
+                        index--;
+                    }
                 }
             }
         }
